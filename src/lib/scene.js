@@ -33,7 +33,7 @@ export default function () {
             }
 
             renderer = new THREE.WebGLRenderer({ antialias: true });
-            renderer.setSize(displayWidth, displayHeight);
+            renderer.setSize(displayWidth, 1 / 2 * displayWidth);
 
             monitor.innerHTML = "";
             monitor.appendChild(renderer.domElement);

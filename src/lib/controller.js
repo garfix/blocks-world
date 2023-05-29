@@ -4,9 +4,11 @@ export default (function () {
     let monitor
     let webSocket
     let scene
+    let printer
 
-    function initialize(elementId) {
+    function initialize(elementId, printerCallback) {
         monitor = document.getElementById(elementId)
+        printer = printerCallback
 
         scene = createScene()
 
@@ -26,7 +28,7 @@ export default (function () {
                 scene.build(monitor, message.Message, monitor.clientWidth, monitor.clientHeight)
                 break
             case "print":
-                print(message.Message)
+                printer(message.Message)
                 send("language", "acknowledge", "")
                 break
             case "move_to":
@@ -35,8 +37,35 @@ export default (function () {
         }
     }
 
+    function handleInput(input) {
+        send("language", "respond", input)
+    }
+
     function loadScene() {
         send("no-resource", "describe", '')
+    }
+
+    function doMoveTo(resource, moves) {
+        let maxDuration = 0;
+        let animations = [];
+
+        for (const move of moves) {
+            let result = scene.createObjectAnimation({
+                E: move[0],
+                X: move[1],
+                Y: move[3],
+                Z: move[2]
+            })
+            animations.push(result.animation)
+            maxDuration = Math.max(maxDuration, result.duration)
+        }
+
+        if (animations.length > 0) {
+            scene.runAnimations(animations, maxDuration)
+        }
+        window.setTimeout(function () {
+            send("robot", "acknowledge", "")
+        }, maxDuration);
     }
 
     function send(resource, messageType, message) {
@@ -50,6 +79,7 @@ export default (function () {
     }
 
     return {
-        initialize
+        initialize,
+        handleInput
     }
 })()

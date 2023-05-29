@@ -1,27 +1,36 @@
 <template>
-  <q-page class="flex row">
+    <q-page class="flex row">
 
-    <div class="col column">
-      <blocks-monitor></blocks-monitor>
-    </div>
-    <div class="col col-md-auto column">
-      <blocks-chat></blocks-chat>
-    </div>
+        <div class="col column">
+            <blocks-monitor></blocks-monitor>
+        </div>
+        <div class="col col-md-auto column">
+            <blocks-chat @input="handleInput" :in-message="printMessage"></blocks-chat>
+        </div>
 
-  </q-page>
+    </q-page>
 </template>
 
 <script setup>
 
-import { onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import BlocksChat from '../components/BlocksChat.vue'
 import BlocksMonitor from '../components/BlocksMonitor.vue'
 import controller from '../lib/controller'
 
+const printMessage = ref("")
+
 onMounted(() => {
-  controller.initialize('monitor')
+    controller.initialize('monitor', print)
 })
 
+function print(message) {
+    printMessage.value = message
+}
+
+function handleInput(input) {
+    controller.handleInput(input)
+}
 
 </script>
 
