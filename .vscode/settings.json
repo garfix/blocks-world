@@ -2,12 +2,11 @@
   "editor.bracketPairColorization.enabled": true,
   "editor.guides.bracketPairs": true,
   "editor.formatOnSave": true,
-  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  "editor.tabSize": 4,
   "editor.codeActionsOnSave": [
     "source.fixAll.eslint"
   ],
   "eslint.validate": [
-    "javascript",
     "javascriptreact",
     "typescript",
     "vue"

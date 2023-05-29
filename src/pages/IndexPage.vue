@@ -1,37 +1,28 @@
 <template>
   <q-page class="flex row">
 
-    <div class="col">
-      .col
+    <div class="col column">
+      <blocks-monitor></blocks-monitor>
     </div>
-    <div class="col chat">
-
-      <q-chat-message
-        name="me"
-        :text="['hey, how are you?']"
-        sent
-      />
-      <q-chat-message
-        name="blocks"
-        :text="['doing fine, how r you?']"
-      />
-
+    <div class="col col-md-auto column">
+      <blocks-chat></blocks-chat>
     </div>
 
   </q-page>
 </template>
 
-<script>
-import { defineComponent } from 'vue'
+<script setup>
 
-export default defineComponent({
-  name: 'IndexPage'
+import { onMounted } from 'vue';
+import BlocksChat from '../components/BlocksChat.vue'
+import BlocksMonitor from '../components/BlocksMonitor.vue'
+import controller from '../lib/controller'
+
+onMounted(() => {
+  controller.initialize('monitor')
 })
+
+
 </script>
 
-<style scoped>
-
-.chat {
-  margin: 20px;
-}
-</style>
+<style scoped></style>
