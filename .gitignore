@@ -1,21 +1,29 @@
-# If you prefer the allow list template instead of the deny list, see community template:
-# https://github.com/github/gitignore/blob/main/community/Golang/Go.AllowList.gitignore
-#
-# Binaries for programs and plugins
-*.exe
-*.exe~
-*.dll
-*.so
-*.dylib
+.DS_Store
+.thumbs.db
+node_modules
 
-# Test binary, built with `go test -c`
-*.test
+# Quasar core related directories
+.quasar
+/dist
 
-# Output of the go coverage tool, specifically when used with LiteIDE
-*.out
+# Cordova related directories and files
+/src-cordova/node_modules
+/src-cordova/platforms
+/src-cordova/plugins
+/src-cordova/www
 
-# Dependency directories (remove the comment below to include it)
-# vendor/
+# Capacitor related directories and files
+/src-capacitor/www
+/src-capacitor/node_modules
 
-# Go workspace file
-go.work
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
