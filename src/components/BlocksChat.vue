@@ -1,7 +1,9 @@
 <template>
     <div class="col chat">
-        <q-chat-message v-for="message in messages" :name="message.from" :text="message.text" :sent="message.sent" />
-        <!-- <q-chat-message name="Blocks" :text="['doing fine, how r you?']" /> -->
+
+        <div class="message-container" ref="container">
+            <q-chat-message v-for="message in messages" :name="message.from" :text="message.text" :sent="message.sent" />
+        </div>
     </div>
     <div class="col col-md-auto">
 
@@ -24,10 +26,11 @@
 
 <script setup>
 
-import { ref, watch } from "vue"
+import { ref, watch, nextTick } from "vue"
 
 const emits = defineEmits(['input'])
 const props = defineProps(['inMessage'])
+const container = ref()
 
 const text = ref("")
 const messages = ref([])
@@ -38,7 +41,7 @@ function clear() {
 
 watch(() => props.inMessage, message => {
     if (message != "") {
-        messages.value.push({
+        addMessage({
             from: "Blocks world",
             text: [message],
             sent: false
@@ -48,7 +51,7 @@ watch(() => props.inMessage, message => {
 
 function send() {
     if (text.value !== "") {
-        messages.value.push({
+        addMessage({
             from: "Me",
             text: [text.value],
             sent: true
@@ -58,12 +61,29 @@ function send() {
     }
 }
 
+function addMessage(message) {
+    messages.value.push(message)
+    nextTick(() => {
+        container.value.scrollTop = container.value.scrollHeight
+    });
+}
+
 </script>
 
 <style scoped>
+.message-container {
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    overflow: auto;
+    position: absolute;
+    padding: 20px;
+}
+
 .chat {
     min-width: 600px;
-    margin: 20px;
+    position: relative;
 }
 
 .input {
