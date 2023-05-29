@@ -7,7 +7,7 @@
     </div>
     <div class="col col-md-auto">
 
-        <q-input bottom-slots v-model="text" label="Message" class="input" @keyup.enter="send">
+        <q-input bottom-slots v-model="text" label="Message" class="input" @keyup.enter="send" ref="input">
             <template v-slot:append>
                 <q-icon v-if="text !== ''" name="close" class="cursor-pointer" @click="clear" />
             </template>
@@ -26,7 +26,7 @@
 
 <script setup>
 
-import { ref, watch, nextTick } from "vue"
+import { ref, watch, nextTick, onMounted } from "vue"
 
 const emits = defineEmits(['input'])
 const props = defineProps(['inMessage'])
@@ -34,10 +34,15 @@ const container = ref()
 
 const text = ref("")
 const messages = ref([])
+const input = ref()
 
 function clear() {
     text.value = ''
 }
+
+onMounted(() => {
+    input.value.focus()
+})
 
 watch(() => props.inMessage, message => {
     if (message != "") {
@@ -68,6 +73,7 @@ function addMessage(message) {
     });
 }
 
+
 </script>
 
 <style scoped>
@@ -82,11 +88,12 @@ function addMessage(message) {
 }
 
 .chat {
-    min-width: 600px;
+    width: 50%;
+    min-width: 400px;
     position: relative;
 }
 
 .input {
-    margin: 5px;
+    margin: 10px;
 }
 </style>

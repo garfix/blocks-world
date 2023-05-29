@@ -5,7 +5,7 @@ export default function () {
     const colors = {
         red: 0xc00000,
         green: 0x008000,
-        blue: 0x0000c0,
+        blue: 0x0000d0,
         white: 0xc0c0c0,
         brown: 0x654321,
         black: 0x000000
@@ -14,6 +14,8 @@ export default function () {
     const scale = 90;
     const opacity = 0.9;
     const boxOpacity = 0.4;
+    const tableOpacity = 1.0;
+    const tableThickness = 55;
 
     let scene = null;
     let camera = null;
@@ -23,7 +25,10 @@ export default function () {
     return {
         build(monitor, data, displayWidth, displayHeight) {
             scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xFFF5E9)
             camera = this.createCamera();
+
+            this.addTableLegs(scene)
 
             for (let i = 0; i < data.length; i++) {
                 let datum = data[i];
@@ -32,6 +37,7 @@ export default function () {
                 scene.add(object);
             }
 
+
             renderer = new THREE.WebGLRenderer({ antialias: true });
             renderer.setSize(displayWidth, 1 / 2 * displayWidth);
 
@@ -39,6 +45,36 @@ export default function () {
             monitor.appendChild(renderer.domElement);
 
             renderer.render(scene, camera);
+        },
+
+        addTableLegs(scene) {
+            scene.add(this.createBlock({
+                Width: 50,
+                Height: 150,
+                Length: 50,
+                X: 50,
+                Y: -(tableThickness + 150),
+                Z: 50,
+                Color: 'brown'
+            }));
+            scene.add(this.createBlock({
+                Width: 50,
+                Height: 150,
+                Length: 50,
+                X: 900,
+                Y: -(tableThickness + 150),
+                Z: 50,
+                Color: 'brown'
+            }));
+            scene.add(this.createBlock({
+                Width: 50,
+                Height: 150,
+                Length: 50,
+                X: 900,
+                Y: -(tableThickness + 150),
+                Z: 950,
+                Color: 'brown'
+            }));
         },
 
         createObjectAnimation(datum) {
@@ -113,6 +149,7 @@ export default function () {
         // https://stackoverflow.com/questions/26021618/how-can-i-create-an-axonometric-oblique-cavalier-cabinet-with-threejs
         createCamera() {
             let camera = new THREE.OrthographicCamera(-10, 10, 5, -5, 0, 1000);
+            // let camera = new THREE.PerspectiveCamera(40, 2, 10, 500);
             let matrix = new THREE.Matrix4();
 
             let alpha = Math.PI / 6;
@@ -122,7 +159,7 @@ export default function () {
 
             camera.projectionMatrix.multiply(matrix);
             camera.projectionMatrixInverse.getInverse(camera.projectionMatrix);
-            camera.position.set(8, 4.5, 0);
+            camera.position.set(8, 3.5, 2.5);
 
             return camera;
         },
@@ -140,6 +177,10 @@ export default function () {
                 return this.createHand(datum)
             } else if (datum.Type === "pyramid") {
                 return this.createPyramid(datum)
+            } else if (datum.Type === "table") {
+                datum.Y = -tableThickness
+                datum.Height = tableThickness
+                return this.createBlock(datum)
             } else {
                 return this.createBlock(datum)
             }
@@ -285,7 +326,13 @@ export default function () {
                 new THREE.Face3(4, 7, 6),
             ];
 
-            let blockOpacity = datum.Type === "box" ? boxOpacity : opacity;
+            let blockOpacity = opacity
+
+            if (datum.Type === "box") {
+                blockOpacity = boxOpacity;
+            } else if (datum.Type === "table") {
+                blockOpacity = tableOpacity;
+            }
             let material = new THREE.MeshBasicMaterial({ color: colors[datum.Color], wireframe: false, transparent: true, opacity: blockOpacity });
             let mesh = new THREE.Mesh(geometry, material);
             return mesh;
