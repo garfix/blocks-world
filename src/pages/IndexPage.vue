@@ -5,7 +5,7 @@
             <blocks-monitor></blocks-monitor>
         </div>
         <div class="col col-md-auto column">
-            <blocks-chat @input="handleInput" :in-message="printMessage"></blocks-chat>
+            <blocks-chat ref="chat" @input="handleInput"></blocks-chat>
         </div>
 
     </q-page>
@@ -18,14 +18,14 @@ import BlocksChat from '../components/BlocksChat.vue'
 import BlocksMonitor from '../components/BlocksMonitor.vue'
 import controller from '../lib/controller'
 
-const printMessage = ref("")
+const chat = ref()
 
 onMounted(() => {
     controller.initialize('monitor', print)
 })
 
 function print(message) {
-    printMessage.value = message
+    chat.value.print(message)
 }
 
 function handleInput(input) {

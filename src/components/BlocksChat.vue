@@ -28,6 +28,10 @@
 
 import { ref, watch, nextTick, onMounted } from "vue"
 
+defineExpose({
+    print
+})
+
 const emits = defineEmits(['input'])
 const props = defineProps(['inMessage'])
 const container = ref()
@@ -44,7 +48,7 @@ onMounted(() => {
     input.value.focus()
 })
 
-watch(() => props.inMessage, message => {
+function print(message) {
     if (message != "") {
         addMessage({
             from: "Blocks world",
@@ -52,7 +56,7 @@ watch(() => props.inMessage, message => {
             sent: false
         })
     }
-})
+}
 
 function send() {
     if (text.value !== "") {

@@ -37,9 +37,10 @@ export default function () {
                 scene.add(object);
             }
 
+            const size = Math.min(displayHeight, displayWidth)
 
             renderer = new THREE.WebGLRenderer({ antialias: true });
-            renderer.setSize(displayWidth, 1 / 2 * displayWidth);
+            renderer.setSize(size, size);
 
             monitor.innerHTML = "";
             monitor.appendChild(renderer.domElement);
@@ -148,7 +149,7 @@ export default function () {
 
         // https://stackoverflow.com/questions/26021618/how-can-i-create-an-axonometric-oblique-cavalier-cabinet-with-threejs
         createCamera() {
-            let camera = new THREE.OrthographicCamera(-10, 10, 5, -5, 0, 1000);
+            let camera = new THREE.OrthographicCamera(-10, 10, 10, -10, 0, 1000);
             // let camera = new THREE.PerspectiveCamera(40, 2, 10, 500);
             let matrix = new THREE.Matrix4();
 
@@ -159,7 +160,7 @@ export default function () {
 
             camera.projectionMatrix.multiply(matrix);
             camera.projectionMatrixInverse.getInverse(camera.projectionMatrix);
-            camera.position.set(8, 3.5, 2.5);
+            camera.position.set(23, 15, 35.5);
 
             return camera;
         },
