@@ -12,7 +12,11 @@ export default (function () {
 
         scene = createScene()
 
-        webSocket = new WebSocket("ws://127.0.0.1:3333/")
+        const domain = location.hostname
+        const protocol = location.protocol
+        const wsProtocol = protocol === 'https' ? 'wss' : 'ws'
+
+        webSocket = new WebSocket(wsProtocol + "://" + domain + "/ws_chat")
         webSocket.onopen = () => {
             loadScene()
         }
@@ -32,7 +36,7 @@ export default (function () {
                 send("language", "acknowledge", "")
                 break
             case "move_to":
-                doMoveTo(message.Resource, message.Message[0])
+                doMoveTo(message.Message[0])
                 break
         }
     }
@@ -45,7 +49,7 @@ export default (function () {
         send("no-resource", "describe", '')
     }
 
-    function doMoveTo(resource, moves) {
+    function doMoveTo(moves) {
         let maxDuration = 0;
         let animations = [];
 
