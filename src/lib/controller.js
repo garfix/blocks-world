@@ -14,9 +14,9 @@ export default (function () {
 
         const domain = location.hostname
         const protocol = location.protocol
-        const wsProtocol = protocol === 'https' ? 'wss' : 'ws'
+        const wsProtocol = protocol === 'https:' ? 'wss:' : 'ws:'
 
-        webSocket = new WebSocket(wsProtocol + "://" + domain + "/ws_chat")
+        webSocket = new WebSocket(wsProtocol + "//" + domain + "/ws_chat")
         webSocket.onopen = () => {
             loadScene()
         }
@@ -26,7 +26,7 @@ export default (function () {
     }
 
     function handleIncomingMessage(message) {
-        console.log(message)
+        console.log("received", message)
         switch (message.MessageType) {
             case "description":
                 scene.build(monitor, message.Message, monitor.clientWidth, monitor.clientHeight)
