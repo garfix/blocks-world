@@ -4,9 +4,11 @@
         <div class="message-container" ref="container">
             <div v-for="message in messages">
                 <q-chat-message v-if="message.sent" :name="message.from" :text="message.text" sent bg-color="grey-3" />
-                <q-chat-message v-else :name="message.from" :text="message.text" :sent="message.sent" :avatar="avatar"
-                    bg-color="red-2" />
+                <q-chat-message v-else :name="message.from" :text="message.text" :avatar="avatar" bg-color="red-2" />
             </div>
+            <q-chat-message v-if="thinking" name="Blocks world" :avatar="avatar" bg-color="red-2">
+                <q-spinner-dots v-if="thinking" size="2rem" />
+            </q-chat-message>
         </div>
     </div>
     <div class="col col-md-auto">
@@ -32,6 +34,7 @@
 
 import { ref, watch, nextTick, onMounted } from "vue"
 import avatar from "../assets/avatar.png"
+const thinking = ref(false)
 
 defineExpose({
     print
@@ -55,11 +58,16 @@ onMounted(() => {
 
 function print(message) {
     if (message != "") {
-        addMessage({
-            from: "Blocks world",
-            text: [message],
-            sent: false
-        })
+        thinking.value = true
+        scrollToBottom()
+        setTimeout(() => {
+            thinking.value = false
+            addMessage({
+                from: "Blocks world",
+                text: [message],
+                sent: false
+            })
+        }, 1000)
     }
 }
 
@@ -77,6 +85,10 @@ function send() {
 
 function addMessage(message) {
     messages.value.push(message)
+    scrollToBottom()
+}
+
+function scrollToBottom() {
     nextTick(() => {
         container.value.scrollTop = container.value.scrollHeight
     });
