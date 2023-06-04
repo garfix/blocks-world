@@ -2,7 +2,7 @@
     <q-page class="flex row">
 
         <div class="col column">
-            <blocks-monitor></blocks-monitor>
+            <blocks-monitor id="monitor"></blocks-monitor>
         </div>
         <div class="col col-md-auto column">
             <blocks-chat ref="chat" @input="handleInput"></blocks-chat>
@@ -33,5 +33,3 @@ function handleInput(input) {
 }
 
 </script>
-
-<style scoped></style>

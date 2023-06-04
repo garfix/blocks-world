@@ -1,6 +1,12 @@
 <template>
-    <div id="monitor" class="col monitor"></div>
+    <div :id="id" class="col monitor"></div>
 </template>
+
+<script setup>
+
+defineProps(['id'])
+
+</script>
 
 <style scoped>
 .monitor {

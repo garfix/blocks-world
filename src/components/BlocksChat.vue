@@ -2,7 +2,11 @@
     <div class="col chat">
 
         <div class="message-container" ref="container">
-            <q-chat-message v-for="message in messages" :name="message.from" :text="message.text" :sent="message.sent" />
+            <div v-for="message in messages">
+                <q-chat-message v-if="message.sent" :name="message.from" :text="message.text" sent bg-color="grey-3" />
+                <q-chat-message v-else :name="message.from" :text="message.text" :sent="message.sent" :avatar="avatar"
+                    bg-color="red-2" />
+            </div>
         </div>
     </div>
     <div class="col col-md-auto">
@@ -27,6 +31,7 @@
 <script setup>
 
 import { ref, watch, nextTick, onMounted } from "vue"
+import avatar from "../assets/avatar.png"
 
 defineExpose({
     print
@@ -80,7 +85,18 @@ function addMessage(message) {
 
 </script>
 
+
+
+
 <style scoped>
+.bg-message-me {
+    background-color: #a31f34 !important;
+}
+
+.bg-message-system {
+    background-color: #a31f34 !important;
+}
+
 .message-container {
     left: 0;
     right: 0;
