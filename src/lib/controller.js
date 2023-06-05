@@ -5,10 +5,12 @@ export default (function () {
     let webSocket
     let scene
     let printer
+    let next
 
-    function initialize(elementId, printerCallback) {
+    function initialize(elementId, printerCallback, nextInteraction) {
         monitor = document.getElementById(elementId)
         printer = printerCallback
+        next = nextInteraction
 
         scene = createScene()
 
@@ -19,6 +21,7 @@ export default (function () {
         webSocket = new WebSocket(wsProtocol + "//" + domain + "/ws_chat")
         webSocket.onopen = () => {
             loadScene()
+            nextInteraction()
         }
         webSocket.onmessage = (event) => {
             handleIncomingMessage(JSON.parse(event.data))
@@ -37,6 +40,9 @@ export default (function () {
                 break
             case "move_to":
                 doMoveTo(message.Message[0])
+                break
+            case "processlist_clear":
+                next()
                 break
         }
     }

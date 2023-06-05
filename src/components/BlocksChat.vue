@@ -15,7 +15,7 @@
 
         <q-input bottom-slots v-model="text" label="Message" class="input" @keyup.enter="send" ref="input">
             <template v-slot:append>
-                <q-icon v-if="text !== ''" name="close" class="cursor-pointer" @click="clear" />
+                <q-icon v-if="text !== ''" name="close" class="cursor-pointer" @click="clearInput" />
             </template>
 
             <template v-slot:hint>
@@ -37,7 +37,9 @@ import avatar from "../assets/avatar.png"
 const thinking = ref(false)
 
 defineExpose({
-    print
+    print,
+    enterInput,
+    clear
 })
 
 const emits = defineEmits(['input'])
@@ -48,7 +50,7 @@ const text = ref("")
 const messages = ref([])
 const input = ref()
 
-function clear() {
+function clearInput() {
     text.value = ''
 }
 
@@ -56,35 +58,50 @@ onMounted(() => {
     input.value.focus()
 })
 
+function clear() {
+    messages.value = []
+}
+
+function enterInput(message) {
+    text.value = message
+    send()
+}
+
 function print(message) {
     if (message != "") {
-        thinking.value = true
-        scrollToBottom()
-        setTimeout(() => {
-            thinking.value = false
-            addMessage({
-                from: "Blocks world",
-                text: [message],
-                sent: false
-            })
-        }, 1000)
+        addMessage({
+            from: "Blocks world",
+            text: [message],
+            sent: false
+        })
     }
 }
 
 function send() {
+    const input = text.value
     if (text.value !== "") {
         addMessage({
             from: "Me",
             text: [text.value],
             sent: true
         })
-        emits('input', text.value)
-        clear()
+        clearInput()
+        showThinking(true)
+        setTimeout(() => {
+            showThinking(false)
+            emits('input', input)
+        }, 1000)
+
     }
 }
 
 function addMessage(message) {
     messages.value.push(message)
+    scrollToBottom()
+}
+
+function showThinking(active) {
+    thinking.value = active
     scrollToBottom()
 }
 

@@ -7,6 +7,9 @@
         <div class="col col-md-auto column">
             <blocks-chat ref="chat" @input="handleInput"></blocks-chat>
         </div>
+        <div class="col column">
+            <q-btn color="primary" label="Start demo" @click="startDemo" />
+        </div>
 
     </q-page>
 </template>
@@ -21,7 +24,7 @@ import controller from '../lib/controller'
 const chat = ref()
 
 onMounted(() => {
-    controller.initialize('monitor', print)
+    controller.initialize('monitor', print, () => { })
 })
 
 function print(message) {
@@ -30,6 +33,28 @@ function print(message) {
 
 function handleInput(input) {
     controller.handleInput(input)
+}
+
+const interaction = [
+    "Pick up a big red block",
+    "Grasp the pyramid",
+    "Find a block which is taller than the one you are holding and put it into the box."
+]
+
+let interactionIndex = 0;
+
+function startDemo() {
+    chat.value.clear()
+    controller.initialize('monitor', print, nextInteraction)
+}
+
+function nextInteraction() {
+    setTimeout(() => {
+        const message = interaction[interactionIndex]
+        interactionIndex++
+        chat.value.enterInput(message)
+    }, 1000)
+
 }
 
 </script>
