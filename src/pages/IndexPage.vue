@@ -27,8 +27,8 @@ onMounted(() => {
     controller.initialize('monitor', print, () => { })
 })
 
-function print(message) {
-    chat.value.print(message)
+function print(message, isHtml) {
+    chat.value.print(message, isHtml)
 }
 
 function handleInput(input) {
@@ -37,14 +37,19 @@ function handleInput(input) {
 
 const interaction = [
     "Pick up a big red block",
-    "Grasp the pyramid",
-    "Find a block which is taller than the one you are holding and put it into the box.",
-    "What does the box contain?",
-    "What is the pyramid supported by?",
-    "How many blocks are not in the box?",
-    "Is at least one of them narrower than the one which I told you to pick up?",
-    "Is it supported?"
+    // "Grasp the pyramid",
+    // "Find a block which is taller than the one you are holding and put it into the box.",
+    // "What does the box contain?",
+    // "What is the pyramid supported by?",
+    // "How many blocks are not in the box?",
+    // "Is at least one of them narrower than the one which I told you to pick up?",
+    // "Is it supported?"
+
+    "How many things are on top of green cubes?"
 ]
+
+const BETWEEN_INTERACTIONS = 2000
+const BETWEEN_KEY_STROKES = 100
 
 let interactionIndex = 0;
 
@@ -56,8 +61,8 @@ function startDemo() {
 function nextInteraction() {
     const message = interaction[interactionIndex]
     interactionIndex++
-    let i = 0
     setTimeout(() => {
+        let i = 0
         const timer = setInterval(() => {
             if (i < message.length) {
                 i++
@@ -66,8 +71,8 @@ function nextInteraction() {
                 chat.value.enterInput(message)
                 clearInterval(timer)
             }
-        }, 100)
-    }, 2000)
+        }, BETWEEN_KEY_STROKES)
+    }, BETWEEN_INTERACTIONS)
 }
 
 </script>

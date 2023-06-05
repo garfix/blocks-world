@@ -6,6 +6,7 @@ export default (function () {
     let scene
     let printer
     let next
+    let idGenerator = 0;
 
     function initialize(elementId, printerCallback, nextInteraction) {
         monitor = document.getElementById(elementId)
@@ -35,7 +36,7 @@ export default (function () {
                 scene.build(monitor, message.Message, monitor.clientWidth, monitor.clientHeight)
                 break
             case "print":
-                printer(message.Message)
+                printer(message.Message, false)
                 send("language", "acknowledge", "")
                 break
             case "move_to":
@@ -43,6 +44,9 @@ export default (function () {
                 break
             case "processlist_clear":
                 next()
+                break
+            case "choose":
+                choose(message.Message[0], message.Message[1])
                 break
         }
     }
@@ -76,6 +80,27 @@ export default (function () {
         window.setTimeout(function () {
             send("robot", "acknowledge", "")
         }, maxDuration);
+    }
+
+    function choose(clarification, options) {
+        let out = clarification
+        let index = 1
+        for (const option of options) {
+            const id = idGenerator++
+            out += "<br><br>" + "<button type='button' id='option" + id + "'>" + option + "</button>"
+            const handler = createOptionHandler(index)
+            window.setTimeout(() => {
+                document.getElementById('option' + id).onclick = handler
+            }, 0)
+            index++
+        }
+        printer(out, true)
+    }
+
+    function createOptionHandler(index) {
+        return () => {
+            send("language", "choice", "" + index)
+        }
     }
 
     function send(resource, messageType, message) {

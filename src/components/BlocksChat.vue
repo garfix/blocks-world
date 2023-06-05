@@ -4,7 +4,8 @@
         <div class="message-container" ref="container">
             <div v-for="message in messages">
                 <q-chat-message v-if="message.sent" :name="message.from" :text="message.text" sent bg-color="grey-3" />
-                <q-chat-message v-else :name="message.from" :text="message.text" :avatar="avatar" bg-color="red-2" />
+                <q-chat-message v-else :name="message.from" :text="message.text" :text-html="message.isHtml"
+                    :avatar="avatar" bg-color="red-2" />
             </div>
             <q-chat-message v-if="thinking" name="Blocks world" :avatar="avatar" bg-color="red-2">
                 <q-spinner-dots v-if="thinking" size="2rem" />
@@ -76,13 +77,14 @@ function enterInput(message) {
     send()
 }
 
-function print(message) {
+function print(message, isHtml) {
     showBlocksWorldTyping(false)
     if (message != "") {
         addMessage({
             from: "Blocks world",
             text: [message],
-            sent: false
+            sent: false,
+            isHtml: isHtml
         })
     }
 }
@@ -93,7 +95,8 @@ function send() {
         addMessage({
             from: "Me",
             text: [text.value],
-            sent: true
+            sent: true,
+            isHtml: false
         })
         clearInput()
         setTimeout(() => {
