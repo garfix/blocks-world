@@ -49,12 +49,20 @@ function startDemo() {
 }
 
 function nextInteraction() {
+    const message = interaction[interactionIndex]
+    interactionIndex++
+    let i = 0
     setTimeout(() => {
-        const message = interaction[interactionIndex]
-        interactionIndex++
-        chat.value.enterInput(message)
-    }, 1000)
-
+        const timer = setInterval(() => {
+            if (i < message.length) {
+                i++
+                chat.value.typePartOfMessage(message.substring(0, i))
+            } else {
+                chat.value.enterInput(message)
+                clearInterval(timer)
+            }
+        }, 100)
+    }, 2000)
 }
 
 </script>

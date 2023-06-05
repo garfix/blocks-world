@@ -38,6 +38,7 @@ const thinking = ref(false)
 
 defineExpose({
     print,
+    typePartOfMessage,
     enterInput,
     clear
 })
@@ -60,6 +61,12 @@ onMounted(() => {
 
 function clear() {
     messages.value = []
+}
+
+function typePartOfMessage(message) {
+    text.value = message
+    // if the text exceeds the visible area, auto scroll to the end
+    input.value.$el.querySelector('input').scrollLeft = 1000
 }
 
 function enterInput(message) {
