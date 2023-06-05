@@ -38,7 +38,12 @@ function handleInput(input) {
 const interaction = [
     "Pick up a big red block",
     "Grasp the pyramid",
-    "Find a block which is taller than the one you are holding and put it into the box."
+    "Find a block which is taller than the one you are holding and put it into the box.",
+    "What does the box contain?",
+    "What is the pyramid supported by?",
+    "How many blocks are not in the box?",
+    "Is at least one of them narrower than the one which I told you to pick up?",
+    "Is it supported?"
 ]
 
 let interactionIndex = 0;

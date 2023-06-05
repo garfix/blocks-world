@@ -50,6 +50,8 @@ const container = ref()
 const text = ref("")
 const messages = ref([])
 const input = ref()
+const THINKING_TIME = 1000
+const TYPING_TIME = 1000
 
 function clearInput() {
     text.value = ''
@@ -75,6 +77,7 @@ function enterInput(message) {
 }
 
 function print(message) {
+    showBlocksWorldTyping(false)
     if (message != "") {
         addMessage({
             from: "Blocks world",
@@ -93,11 +96,12 @@ function send() {
             sent: true
         })
         clearInput()
-        showThinking(true)
         setTimeout(() => {
-            showThinking(false)
-            emits('input', input)
-        }, 1000)
+            showBlocksWorldTyping(true)
+            setTimeout(() => {
+                emits('input', input)
+            }, TYPING_TIME)
+        }, THINKING_TIME)
 
     }
 }
@@ -107,9 +111,11 @@ function addMessage(message) {
     scrollToBottom()
 }
 
-function showThinking(active) {
+function showBlocksWorldTyping(active) {
     thinking.value = active
-    scrollToBottom()
+    if (active) {
+        scrollToBottom()
+    }
 }
 
 function scrollToBottom() {
