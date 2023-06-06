@@ -96,7 +96,7 @@ export default (function () {
 
     function choose(clarification, options) {
         let out = clarification
-        let index = 1
+        let index = 0
         for (const option of options) {
             out += "<br><br>" + "<button type='button' data-option='" + index + "'>" + option + "</button>"
             index++
