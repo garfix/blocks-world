@@ -22,6 +22,7 @@ import BlocksMonitor from '../components/BlocksMonitor.vue'
 import controller from '../lib/controller'
 
 const chat = ref()
+const demoRunning = ref(false)
 
 onMounted(() => {
     controller.initialize('monitor', print, () => { })
@@ -36,7 +37,7 @@ function handleInput(input) {
 }
 
 const interaction = [
-    "Pick up a big red block",
+    // "Pick up a big red block",
     // "Grasp the pyramid",
     // "Find a block which is taller than the one you are holding and put it into the box.",
     // "What does the box contain?",
@@ -54,8 +55,9 @@ const BETWEEN_KEY_STROKES = 100
 let interactionIndex = 0;
 
 function startDemo() {
+    demoRunning.value = true
     chat.value.clear()
-    controller.initialize('monitor', print, nextInteraction)
+    controller.initialize('monitor', print, nextInteraction, demoRunning)
 }
 
 function nextInteraction() {

@@ -1,5 +1,7 @@
 import createScene from './scene'
 
+const WAIT_TIME = 1000;
+
 export default (function () {
     let monitor
     let webSocket
@@ -7,11 +9,13 @@ export default (function () {
     let printer
     let next
     let idGenerator = 0;
+    let demo;
 
-    function initialize(elementId, printerCallback, nextInteraction) {
+    function initialize(elementId, printerCallback, nextInteraction, demoRunning) {
         monitor = document.getElementById(elementId)
         printer = printerCallback
         next = nextInteraction
+        demo = demoRunning
 
         scene = createScene()
 
@@ -95,12 +99,22 @@ export default (function () {
             index++
         }
         printer(out, true)
+
+        if (demo) {
+            setTimeout(() => {
+                choice(1)
+            }, WAIT_TIME)
+        }
     }
 
     function createOptionHandler(index) {
         return () => {
-            send("language", "choice", "" + index)
+            choice(index)
         }
+    }
+
+    function choice(index) {
+        send("language", "choice", "" + index)
     }
 
     function send(resource, messageType, message) {
