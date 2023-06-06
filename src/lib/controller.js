@@ -55,7 +55,9 @@ export default (function () {
                 doMoveTo(message.Message[0])
                 break
             case "processlist_clear":
-                next()
+                if (demo.value) {
+                    next()
+                }
                 break
             case "choose":
                 choose(message.Message[0], message.Message[1])
@@ -103,7 +105,7 @@ export default (function () {
         }
         const time = printer(out, true)
 
-        if (demo) {
+        if (demo.value) {
             setTimeout(() => {
                 choice(1)
             }, time)

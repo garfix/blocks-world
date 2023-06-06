@@ -28,7 +28,7 @@ const demoRunning = ref(false)
 const paused = ref(false)
 
 onMounted(() => {
-    controller.initialize('monitor', print, () => { })
+    controller.initialize('monitor', print, () => { }, false)
 })
 
 function print(message, isHtml) {
@@ -114,18 +114,28 @@ function nextInteraction() {
     }
     const message = interaction[interactionIndex]
     interactionIndex++
-    setTimeout(() => {
-        let i = 0
-        const timer = setInterval(() => {
-            if (i < message.length) {
-                i++
-                chat.value.typePartOfMessage(message.substring(0, i))
-            } else {
-                chat.value.enterInput(message)
-                clearInterval(timer)
-            }
-        }, BETWEEN_KEY_STROKES)
-    }, BETWEEN_INTERACTIONS)
+    if (interactionIndex <= interaction.length) {
+        setTimeout(() => {
+            let i = 0
+            const timer = setInterval(() => {
+                if (i < message.length) {
+                    i++
+                    chat.value.typePartOfMessage(message.substring(0, i))
+                } else {
+                    chat.value.enterInput(message)
+                    clearInterval(timer)
+                }
+            }, BETWEEN_KEY_STROKES)
+        }, BETWEEN_INTERACTIONS)
+    } else {
+        resetDemo()
+    }
+}
+
+function resetDemo() {
+    interactionIndex = 0
+    paused.value = false
+    demoRunning.value = false
 }
 
 </script>
