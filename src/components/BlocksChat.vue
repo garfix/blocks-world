@@ -52,7 +52,7 @@ const text = ref("")
 const messages = ref([])
 const input = ref()
 const THINKING_TIME = 1000
-const TYPING_TIME = 1000
+const TYPING_TIME = 100
 
 function clearInput() {
     text.value = ''
@@ -78,15 +78,20 @@ function enterInput(message) {
 }
 
 function print(message, isHtml) {
-    showBlocksWorldTyping(false)
+    const time = TYPING_TIME * message.length
     if (message != "") {
-        addMessage({
-            from: "Blocks world",
-            text: [message],
-            sent: false,
-            isHtml: isHtml
-        })
+        showBlocksWorldTyping(true)
+        setTimeout(() => {
+            showBlocksWorldTyping(false)
+            addMessage({
+                from: "Blocks world",
+                text: [message],
+                sent: false,
+                isHtml: isHtml
+            })
+        }, time)
     }
+    return time
 }
 
 function send() {
@@ -100,10 +105,7 @@ function send() {
         })
         clearInput()
         setTimeout(() => {
-            showBlocksWorldTyping(true)
-            setTimeout(() => {
-                emits('input', input)
-            }, TYPING_TIME)
+            emits('input', input)
         }, THINKING_TIME)
 
     }

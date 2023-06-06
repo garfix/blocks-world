@@ -32,7 +32,7 @@ onMounted(() => {
 })
 
 function print(message, isHtml) {
-    chat.value.print(message, isHtml)
+    return chat.value.print(message, isHtml)
 }
 
 function handleInput(input) {

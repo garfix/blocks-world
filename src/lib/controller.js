@@ -8,7 +8,6 @@ export default (function () {
     let scene
     let printer
     let next
-    let idGenerator = 0;
     let demo;
 
     function initialize(elementId, printerCallback, nextInteraction, demoRunning) {
@@ -31,6 +30,13 @@ export default (function () {
         webSocket.onmessage = (event) => {
             handleIncomingMessage(JSON.parse(event.data))
         }
+
+        document.addEventListener('click', event => {
+            const element = event.target
+            if (element.type === 'button' && element.dataset.option) {
+                choice(element.dataset.option)
+            }
+        })
     }
 
     function handleIncomingMessage(message) {
@@ -40,8 +46,10 @@ export default (function () {
                 scene.build(monitor, message.Message, monitor.clientWidth, monitor.clientHeight)
                 break
             case "print":
-                printer(message.Message, false)
-                send("language", "acknowledge", "")
+                const time = printer(message.Message, false)
+                setTimeout(() => {
+                    send("language", "acknowledge", "")
+                }, time)
                 break
             case "move_to":
                 doMoveTo(message.Message[0])
@@ -90,26 +98,15 @@ export default (function () {
         let out = clarification
         let index = 1
         for (const option of options) {
-            const id = idGenerator++
-            out += "<br><br>" + "<button type='button' id='option" + id + "'>" + option + "</button>"
-            const handler = createOptionHandler(index)
-            window.setTimeout(() => {
-                document.getElementById('option' + id).onclick = handler
-            }, 0)
+            out += "<br><br>" + "<button type='button' data-option='" + index + "'>" + option + "</button>"
             index++
         }
-        printer(out, true)
+        const time = printer(out, true)
 
         if (demo) {
             setTimeout(() => {
                 choice(1)
-            }, WAIT_TIME)
-        }
-    }
-
-    function createOptionHandler(index) {
-        return () => {
-            choice(index)
+            }, time)
         }
     }
 
