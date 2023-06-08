@@ -3,7 +3,8 @@
 
         <div class="message-container" ref="container">
             <div v-for="message in messages">
-                <q-chat-message v-if="message.sent" :name="message.from" :text="message.text" sent bg-color="grey-3" />
+                <q-chat-message v-if="message.sent" :name="message.from" :text="message.text" sent bg-color="grey-3"
+                    class="clickable" @click="selectAsInput(message.text)" title="Click to type again" />
                 <q-chat-message v-else :name="message.from" :text="message.text" :text-html="message.isHtml"
                     :avatar="avatar" bg-color="red-2" />
             </div>
@@ -129,10 +130,12 @@ function scrollToBottom() {
     });
 }
 
+function selectAsInput(message) {
+    text.value = message
+    input.value.$el.focus()
+}
 
 </script>
-
-
 
 
 <style scoped>
@@ -164,5 +167,9 @@ function scrollToBottom() {
 
 .input {
     margin: 10px;
+}
+
+.clickable {
+    cursor: pointer;
 }
 </style>
