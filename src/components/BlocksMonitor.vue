@@ -10,6 +10,6 @@ defineProps(['id'])
 
 <style scoped>
 .monitor {
-    background-color: #FFF5E9;
+    background-color: #c2c0bf;
 }
 </style>

@@ -144,21 +144,23 @@ function scrollToBottom() {
     background-color: #a31f34 !important;
 }
 
-.message-container {
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    overflow: auto;
-    position: absolute;
-    padding: 20px;
-}
-
 .chat {
-    width: 50%;
     min-width: 400px;
     position: relative;
 }
+
+.message-container {
+    padding: 20px;
+    /* https://stackoverflow.com/a/5048250 */
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    left: 0px;
+    overflow-y: auto;
+    /* this is the key */
+    max-height: 100%;
+}
+
 
 .input {
     margin: 10px;

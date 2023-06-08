@@ -25,7 +25,7 @@ export default function () {
     return {
         build(monitor, data, displayWidth, displayHeight) {
             scene = new THREE.Scene();
-            scene.background = new THREE.Color(0xFFF5E9)
+            scene.background = new THREE.Color(0xc2c0bf)
             camera = this.createCamera();
 
             this.addTableLegs(scene)
