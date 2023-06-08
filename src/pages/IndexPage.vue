@@ -7,10 +7,17 @@
         <div class="col col-md-auto column chat">
             <blocks-chat ref="chat" @input="handleInput"></blocks-chat>
         </div>
-        <div class="col-md-auto col column sidebar">
-            <q-btn v-if="!demoRunning" color="primary" label="Start demo" @click="startDemo" />
-            <q-btn v-if="demoRunning && !paused" color="primary" label="Pause" @click="pauseDemo" />
-            <q-btn v-if="demoRunning && paused" color="primary" label="Continue" @click="continueDemo" />
+        <div class="col-md-auto col column sidebar q-gutter-md">
+            <q-btn v-if="!demoRunning" color="primary" label="Start demo" class="sidebar-item" @click="startDemo" />
+            <q-btn v-if="demoRunning && !paused" color="primary" label="Pause" class="sidebar-item" @click="pauseDemo" />
+            <q-btn v-if="demoRunning && paused" color="primary" label="Continue" class="sidebar-item"
+                @click="continueDemo" />
+
+            <q-linear-progress v-if="demoRunning" size="25px" :value="progress" class="sidebar-item" color="primary">
+                <div class="absolute-full flex flex-center">
+                    <q-badge color="white" text-color="primary" :label="progressLabel" />
+                </div>
+            </q-linear-progress>
         </div>
 
     </q-page>
@@ -18,7 +25,7 @@
 
 <script setup>
 
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import BlocksChat from '../components/BlocksChat.vue'
 import BlocksMonitor from '../components/BlocksMonitor.vue'
 import controller from '../lib/controller'
@@ -27,6 +34,9 @@ import conversation from '../lib/conversation'
 const chat = ref()
 const demoRunning = ref(false)
 const paused = ref(false)
+const progress = computed(() => interactionIndex.value / conversation.length)
+const progressLabel = computed(() => interactionIndex.value + " / " + conversation.length)
+let interactionIndex = ref(0);
 
 onMounted(() => {
     controller.initialize('monitor', print, () => { }, false)
@@ -43,7 +53,6 @@ function handleInput(input) {
 const BETWEEN_INTERACTIONS = 2000
 const BETWEEN_KEY_STROKES = 100
 
-let interactionIndex = 0;
 
 function startDemo() {
     demoRunning.value = true
@@ -66,9 +75,9 @@ function nextInteraction() {
         }, 500)
         return
     }
-    const message = conversation[interactionIndex]
-    interactionIndex++
-    if (interactionIndex <= conversation.length) {
+    const message = conversation[interactionIndex.value]
+    interactionIndex.value++
+    if (interactionIndex.value <= conversation.length) {
         setTimeout(() => {
             let i = 0
             const timer = setInterval(() => {
@@ -87,7 +96,7 @@ function nextInteraction() {
 }
 
 function resetDemo() {
-    interactionIndex = 0
+    interactionIndex.value = 0
     paused.value = false
     demoRunning.value = false
 }
@@ -112,7 +121,7 @@ function resetDemo() {
     padding: 20px;
 }
 
-.sidebar button {
+.sidebar-item {
     width: 150px;
 }
 </style>
