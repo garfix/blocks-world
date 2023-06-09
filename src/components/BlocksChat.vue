@@ -15,7 +15,8 @@
     </div>
     <div class="col col-md-auto">
 
-        <q-input bottom-slots v-model="text" label="Message" class="input" @keyup.enter="send" ref="input">
+        <q-input bottom-slots v-model="text" label="Message" class="input" @keyup.enter="send" @keyup.up="previous"
+            @keyup.down="next" ref="input">
             <template v-slot:append>
                 <q-icon v-if="text !== ''" name="close" class="cursor-pointer" @click="clearInput" />
             </template>
@@ -48,6 +49,8 @@ defineExpose({
 const emits = defineEmits(['input'])
 const props = defineProps(['inMessage'])
 const container = ref()
+const history = ref([""])
+const historyIndex = ref(0)
 
 const text = ref("")
 const messages = ref([])
@@ -104,11 +107,41 @@ function send() {
             sent: true,
             isHtml: false
         })
+        updateLastHistoryEntry()
+        addToHistory("")
         clearInput()
         setTimeout(() => {
             emits('input', input)
         }, THINKING_TIME)
 
+    }
+}
+
+function addToHistory(message) {
+    history.value.push(message)
+    historyIndex.value = history.value.length - 1
+}
+
+function updateLastHistoryEntry() {
+    history.value[history.value.length - 1] = text.value
+}
+
+function previous() {
+    // is this is last (current) entry?
+    if (historyIndex.value === history.value.length - 1) {
+        updateLastHistoryEntry()
+    }
+
+    if (historyIndex.value > 0) {
+        historyIndex.value--
+        text.value = history.value[historyIndex.value]
+    }
+}
+
+function next() {
+    if (historyIndex.value < history.value.length - 1) {
+        historyIndex.value++
+        text.value = history.value[historyIndex.value]
     }
 }
 
@@ -139,14 +172,6 @@ function selectAsInput(message) {
 
 
 <style scoped>
-.bg-message-me {
-    background-color: #a31f34 !important;
-}
-
-.bg-message-system {
-    background-color: #a31f34 !important;
-}
-
 .chat {
     min-width: 400px;
     position: relative;
