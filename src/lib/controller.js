@@ -1,20 +1,18 @@
 import createScene from './scene'
 
-const WAIT_TIME = 1000;
-
 export default (function () {
     let monitor
     let webSocket
     let scene
     let printer
-    let next
-    let demo;
+    let isClearFunction
+    let isAutomaticFunction;
 
-    function initialize(elementId, printerCallback, nextInteraction, demoRunning) {
+    function initialize(elementId, printerCallback, processlistClear, interactionAutomatic) {
         monitor = document.getElementById(elementId)
         printer = printerCallback
-        next = nextInteraction
-        demo = demoRunning
+        isClearFunction = processlistClear
+        isAutomaticFunction = interactionAutomatic
 
         scene = createScene()
 
@@ -25,7 +23,7 @@ export default (function () {
         webSocket = new WebSocket(wsProtocol + "//" + domain + "/ws_chat")
         webSocket.onopen = () => {
             loadScene()
-            nextInteraction()
+            processlistClear()
         }
         webSocket.onmessage = (event) => {
             handleIncomingMessage(JSON.parse(event.data))
@@ -55,9 +53,7 @@ export default (function () {
                 doMoveTo(message.Message[0])
                 break
             case "processlist_clear":
-                if (demo.value) {
-                    next()
-                }
+                isClearFunction()
                 break
             case "choose":
                 choose(message.Message[0], message.Message[1])
@@ -105,7 +101,7 @@ export default (function () {
         }
         const time = printer(out, true)
 
-        if (demo.value) {
+        if (isAutomaticFunction()) {
             setTimeout(() => {
                 choice(1)
             }, time)

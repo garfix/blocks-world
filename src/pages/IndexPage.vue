@@ -8,12 +8,15 @@
             <blocks-chat ref="chat" @input="handleInput"></blocks-chat>
         </div>
         <div class="col-md-auto col column sidebar q-gutter-md">
-            <q-btn v-if="!demoRunning" color="primary" label="Start demo" class="sidebar-item" @click="startDemo" />
-            <q-btn v-if="demoRunning && !paused" color="primary" label="Pause" class="sidebar-item" @click="pauseDemo" />
-            <q-btn v-if="demoRunning && paused" color="primary" label="Continue" class="sidebar-item"
+            <q-btn v-if="demoState == STATE_INACTIVE" color="primary" label="Start demo" class="sidebar-item"
+                @click="startDemo" />
+            <q-btn v-if="demoState == STATE_RUNNING" color="primary" label="Pause" class="sidebar-item"
+                @click="pauseDemo" />
+            <q-btn v-if="demoState == STATE_PAUSING" color="primary" label="Pausing ..." class="sidebar-item" disabled />
+            <q-btn v-if="demoState == STATE_PAUSED" color="primary" label="Continue" class="sidebar-item"
                 @click="continueDemo" />
 
-            <q-linear-progress v-if="demoRunning" size="25px" :value="progress" class="sidebar-item" color="primary">
+            <q-linear-progress v-if="demoState" size="25px" :value="progress" class="sidebar-item" color="primary">
                 <div class="absolute-full flex flex-center">
                     <q-badge color="white" text-color="primary" :label="progressLabel" />
                 </div>
@@ -31,16 +34,37 @@ import BlocksMonitor from '../components/BlocksMonitor.vue'
 import controller from '../lib/controller'
 import conversation from '../lib/conversation'
 
+const BETWEEN_INTERACTIONS = 2000
+const BETWEEN_KEY_STROKES = 100
+
+const STATE_INACTIVE = "inactive"
+const STATE_RUNNING = "running"
+const STATE_PAUSING = "pausing"
+const STATE_PAUSED = "paused"
+
 const chat = ref()
-const demoRunning = ref(false)
-const paused = ref(false)
+const demoState = ref(STATE_INACTIVE)
 const progress = computed(() => interactionIndex.value / conversation.length)
 const progressLabel = computed(() => interactionIndex.value + " / " + conversation.length)
 let interactionIndex = ref(0);
 
 onMounted(() => {
-    controller.initialize('monitor', print, () => { }, false)
+    startController()
 })
+
+function startController() {
+    controller.initialize('monitor', print, processlistClear, isAutomatic)
+}
+
+function startDemo() {
+    demoState.value = STATE_RUNNING
+    chat.value.clear()
+    startController()
+}
+
+function isAutomatic() {
+    return demoState.value == STATE_RUNNING || demoState.value == STATE_PAUSING
+}
 
 function print(message, isHtml) {
     return chat.value.print(message, isHtml)
@@ -50,31 +74,27 @@ function handleInput(input) {
     controller.handleInput(input)
 }
 
-const BETWEEN_INTERACTIONS = 2000
-const BETWEEN_KEY_STROKES = 100
-
-
-function startDemo() {
-    demoRunning.value = true
-    chat.value.clear()
-    controller.initialize('monitor', print, nextInteraction, demoRunning)
-}
-
 function pauseDemo() {
-    paused.value = true
+    demoState.value = STATE_PAUSING
 }
 
 function continueDemo() {
-    paused.value = false
+    demoState.value = STATE_RUNNING
+    nextInteraction()
+}
+
+function processlistClear() {
+    if (demoState.value == STATE_PAUSING) {
+        demoState.value = STATE_PAUSED
+    }
+    if (isAutomatic()) {
+        if (demoState.value == STATE_RUNNING) {
+            nextInteraction()
+        }
+    }
 }
 
 function nextInteraction() {
-    if (paused.value) {
-        setTimeout(() => {
-            nextInteraction()
-        }, 500)
-        return
-    }
     const message = conversation[interactionIndex.value]
     interactionIndex.value++
     if (interactionIndex.value <= conversation.length) {
@@ -98,7 +118,7 @@ function nextInteraction() {
 function resetDemo() {
     interactionIndex.value = 0
     paused.value = false
-    demoRunning.value = false
+    demoState.value = false
 }
 
 </script>
