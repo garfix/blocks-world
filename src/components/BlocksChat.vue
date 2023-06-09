@@ -82,7 +82,7 @@ function enterInput(message) {
 }
 
 function print(message, isHtml) {
-    const time = TYPING_TIME * message.length
+    const time = Math.min(TYPING_TIME * message.length, 7000)
     if (message != "") {
         showBlocksWorldTyping(true)
         setTimeout(() => {
