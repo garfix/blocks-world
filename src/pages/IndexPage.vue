@@ -176,7 +176,7 @@ function resetDemo() {
     .chat {
         position: absolute;
         left: 0;
-        right: 30%;
+        right: 35%;
         top: 50%;
         bottom: 0;
         background-color: white;
@@ -185,16 +185,16 @@ function resetDemo() {
 
     .sidebar {
         position: absolute;
-        left: 70%;
+        left: 65%;
         right: 0;
         top: 50%;
         bottom: 0;
-        padding: 20px;
+        padding: 10px 10px 10px 10px;
     }
 
 }
 
 .sidebar-item {
-    width: 80%;
+    width: calc(100% - 20px);
 }
 </style>
