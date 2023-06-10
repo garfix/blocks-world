@@ -16,7 +16,8 @@
             <q-btn v-if="demoState == STATE_PAUSED" color="primary" label="Continue" class="sidebar-item"
                 @click="continueDemo" />
 
-            <q-linear-progress v-if="demoState" size="25px" :value="progress" class="sidebar-item" color="primary">
+            <q-linear-progress v-if="demoState != STATE_INACTIVE" size="25px" :value="progress" class="sidebar-item"
+                color="primary">
                 <div class="absolute-full flex flex-center">
                     <q-badge color="white" text-color="primary" :label="progressLabel" />
                 </div>
@@ -117,8 +118,7 @@ function nextInteraction() {
 
 function resetDemo() {
     interactionIndex.value = 0
-    paused.value = false
-    demoState.value = false
+    demoState.value = STATE_INACTIVE
 }
 
 </script>
