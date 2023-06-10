@@ -163,6 +163,37 @@ function resetDemo() {
     padding: 20px;
 }
 
+@media (orientation: portrait) {
+    .monitor {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 50%;
+        background-color: #c2c0bf;
+    }
+
+    .chat {
+        position: absolute;
+        left: 0;
+        right: 30%;
+        top: 50%;
+        bottom: 0;
+        background-color: white;
+        padding: 10px;
+    }
+
+    .sidebar {
+        position: absolute;
+        left: 70%;
+        right: 0;
+        top: 50%;
+        bottom: 0;
+        padding: 20px;
+    }
+
+}
+
 .sidebar-item {
     width: 80%;
 }
