@@ -1,6 +1,8 @@
 # Blocks world
 
-An NLI-GO client for the blocks world. Uses [Quasar](https://quasar.dev/)
+An [NLI-GO](https://github.com/garfix/nli-go) client for the blocks world, a replication of Terry Winograd's SHRDLU (1970).
+
+Built with [Quasar](https://quasar.dev/) and [Three.js](https://threejs.org/)
 
 ## Installation
 
