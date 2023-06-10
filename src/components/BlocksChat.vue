@@ -13,7 +13,7 @@
             </q-chat-message>
         </div>
     </div>
-    <div class="col col-md-auto">
+    <div class="col col-md-auto chat-input">
 
         <q-input bottom-slots v-model="text" label="Message" class="input" @keyup.enter="send" @keyup.up="previous"
             @keyup.down="next" ref="input">
@@ -173,8 +173,12 @@ function selectAsInput(message) {
 
 <style scoped>
 .chat {
-    min-width: 25vw;
+    width: 100%;
     position: relative;
+}
+
+.chat-input {
+    width: 100%;
 }
 
 .message-container {

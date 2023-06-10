@@ -1,13 +1,13 @@
 <template>
     <q-page class="flex row page-wrapper">
 
-        <div class="col column">
+        <div class="col column monitor">
             <blocks-monitor id="monitor"></blocks-monitor>
         </div>
-        <div class="col col-md-auto column chat">
+        <div class="col column chat">
             <blocks-chat ref="chat" @input="handleInput"></blocks-chat>
         </div>
-        <div class="col-md-auto col column sidebar q-gutter-md">
+        <div class=" col column sidebar q-gutter-md">
             <q-btn v-if="demoState == STATE_INACTIVE" color="primary" label="Start demo" class="sidebar-item"
                 @click="startDemo" />
             <q-btn v-if="demoState == STATE_RUNNING" color="primary" label="Pause" class="sidebar-item"
@@ -23,6 +23,7 @@
                 </div>
             </q-linear-progress>
         </div>
+
 
     </q-page>
 </template>
@@ -134,11 +135,23 @@ function resetDemo() {
 }
 
 .chat {
+    width: 20vw;
+    max-width: 400px !important;
     background-color: white;
+    padding: 10px;
+
 }
 
 .sidebar {
+    width: 10vw;
+    max-width: 200px !important;
     padding: 20px;
+}
+
+.monitor {
+    width: 50vw;
+    max-width: 1000px !important;
+    background-color: #c2c0bf;
 }
 
 .sidebar-item {

@@ -23,7 +23,7 @@ export default function () {
     let objects = {}
 
     return {
-        build(monitor, data, displayWidth, displayHeight) {
+        build(monitor, data) {
             scene = new THREE.Scene();
             scene.background = new THREE.Color(0xc2c0bf)
             camera = this.createCamera();
@@ -37,14 +37,22 @@ export default function () {
                 scene.add(object);
             }
 
-            const size = Math.min(displayHeight, displayWidth)
-
             renderer = new THREE.WebGLRenderer({ antialias: true });
-            renderer.setSize(size, size);
+            this.resize();
 
             monitor.innerHTML = "";
             monitor.appendChild(renderer.domElement);
 
+            renderer.render(scene, camera);
+        },
+
+        resize() {
+            const width = Math.min(window.innerWidth / 2, 1000)
+            const height = window.innerHeight - 50
+
+            let size = Math.min(width, height)
+
+            renderer.setSize(size, size);
             renderer.render(scene, camera);
         },
 

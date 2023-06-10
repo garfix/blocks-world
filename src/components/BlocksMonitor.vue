@@ -7,9 +7,3 @@
 defineProps(['id'])
 
 </script>
-
-<style scoped>
-.monitor {
-    background-color: #c2c0bf;
-}
-</style>

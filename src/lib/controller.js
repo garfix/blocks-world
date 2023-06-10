@@ -35,13 +35,21 @@ export default (function () {
                 choice(element.dataset.option)
             }
         })
+
+        window.addEventListener('resize', resize)
+    }
+
+    function resize() {
+        if (scene) {
+            scene.resize()
+        }
     }
 
     function handleIncomingMessage(message) {
         console.log("received", message)
         switch (message.MessageType) {
             case "description":
-                scene.build(monitor, message.Message, monitor.clientWidth, monitor.clientHeight)
+                scene.build(monitor, message.Message)
                 break
             case "print":
                 const time = printer(message.Message, false)
@@ -124,6 +132,7 @@ export default (function () {
 
     return {
         initialize,
-        handleInput
+        handleInput,
+        resize,
     }
 })()
