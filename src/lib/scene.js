@@ -190,7 +190,7 @@ export default function () {
         createHand(datum) {
             const shaft = this.createBlockMesh({
                 Width: 10,
-                Height: 990,
+                Height: 1990,
                 Length: 10,
                 Color: datum.Color
             })
