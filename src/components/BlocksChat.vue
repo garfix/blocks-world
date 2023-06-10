@@ -173,7 +173,7 @@ function selectAsInput(message) {
 
 <style scoped>
 .chat {
-    min-width: 400px;
+    min-width: 25vw;
     position: relative;
 }
 
