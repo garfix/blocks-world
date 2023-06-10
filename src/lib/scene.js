@@ -47,7 +47,7 @@ export default function () {
         },
 
         resize() {
-            const width = Math.min(window.innerWidth / 2, 1000)
+            const width = Math.min(window.innerWidth, 1500) * 0.5
             const height = window.innerHeight - 50
 
             let size = Math.min(width, height)

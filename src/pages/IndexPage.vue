@@ -1,13 +1,13 @@
 <template>
     <q-page class="flex row page-wrapper">
 
-        <div class="col column monitor">
+        <div class="col col-md-auto column monitor">
             <blocks-monitor id="monitor"></blocks-monitor>
         </div>
-        <div class="col column chat">
+        <div class="col col-md-auto column chat">
             <blocks-chat ref="chat" @input="handleInput"></blocks-chat>
         </div>
-        <div class=" col column sidebar q-gutter-md">
+        <div class="col col-md-auto column sidebar q-gutter-md">
             <q-btn v-if="demoState == STATE_INACTIVE" color="primary" label="Start demo" class="sidebar-item"
                 @click="startDemo" />
             <q-btn v-if="demoState == STATE_RUNNING" color="primary" label="Pause" class="sidebar-item"
@@ -132,29 +132,38 @@ function resetDemo() {
     max-width: 1500px;
     margin-left: auto;
     margin-right: auto;
-}
-
-.chat {
-    width: 20vw;
-    max-width: 400px !important;
-    background-color: white;
-    padding: 10px;
-
-}
-
-.sidebar {
-    width: 10vw;
-    max-width: 200px !important;
-    padding: 20px;
+    position: relative;
 }
 
 .monitor {
-    width: 50vw;
-    max-width: 1000px !important;
+    position: absolute;
+    left: 0;
+    right: 50%;
+    top: 0;
+    bottom: 0;
     background-color: #c2c0bf;
 }
 
+.chat {
+    position: absolute;
+    left: 50%;
+    right: 20%;
+    top: 0;
+    bottom: 0;
+    background-color: white;
+    padding: 10px;
+}
+
+.sidebar {
+    position: absolute;
+    left: 80%;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    padding: 20px;
+}
+
 .sidebar-item {
-    width: 150px;
+    width: 80%;
 }
 </style>

@@ -1,0 +1,26 @@
+{
+    "short_name": "Blocks world",
+    "name": "Blocks world",
+    "icons": [
+        {
+            "src": "images/icon-192.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        },
+        {
+            "src": "images/icon-512.png",
+            "type": "image/png",
+            "sizes": "512x512"
+        }
+    ],
+    "start_url": "/blocks-world",
+    "background_color": "#c2c0bf",
+    "display_override": [
+        "fullscreen",
+        "standalone",
+        "minimal-ui"
+    ],
+    "display": "fullscreen",
+    "theme_color": "#a31f34",
+    "description": "Blocks world - a replication of SHRDLU in NLI-GO"
+}

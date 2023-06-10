@@ -26,7 +26,7 @@ Build the app for production
 
 The server is currently deployed on https://patrickvanbergen.com/blocks
 
-In `quasar.config.js` `publicPath` is set to `/blocks` as this is where the site is currently deployed. You may need to change it.
+In `quasar.config.js` `publicPath` is set to `/blocks` as this is where the site is currently deployed. You may need to change it. There are also references in `public/manifest.json`.
 
 ## Websockets
 
@@ -44,3 +44,9 @@ It proxies the request /ws_chat to port 3333
 
 from: https://httpd.apache.org/docs/2.4/mod/mod_proxy_wstunnel.html
 
+## Icon
+
+at(`block:small-red`, 100, 100, 0)
+at(`pyramid:green`, 100, 100, 100)
+at(`block:blue`, 150, 250, 0)
+size(`block:blue`, 100, 100, 200)

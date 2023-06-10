@@ -1,5 +1,5 @@
 <template>
-    <div class="col chat">
+    <div class="chat">
 
         <div class="message-container" ref="container">
             <div v-for="message in messages">
@@ -13,7 +13,7 @@
             </q-chat-message>
         </div>
     </div>
-    <div class="col col-md-auto chat-input">
+    <div class="chat-input">
 
         <q-input bottom-slots v-model="text" label="Message" class="input" @keyup.enter="send" @keyup.up="previous"
             @keyup.down="next" ref="input">
@@ -173,12 +173,18 @@ function selectAsInput(message) {
 
 <style scoped>
 .chat {
-    width: 100%;
-    position: relative;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 100px;
+    position: absolute;
 }
 
 .chat-input {
-    width: 100%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
 }
 
 .message-container {
