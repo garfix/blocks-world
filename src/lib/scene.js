@@ -38,20 +38,17 @@ export default function () {
             }
 
             renderer = new THREE.WebGLRenderer({ antialias: true });
-            this.resize();
 
             monitor.innerHTML = "";
             monitor.appendChild(renderer.domElement);
 
-            renderer.render(scene, camera);
+            this.resize();
         },
 
         resize() {
-            const width = monitor.clientWidth;
-            const height = monitor.clientHeight;
-
-            let size = Math.min(width, height)
-
+            const width = window.innerWidth
+            const height = window.innerHeight
+            const size = (width > height) ? Math.min(width / 2, height - 50) : Math.min(width, (height - 50) / 2)
             renderer.setSize(size, size);
             renderer.render(scene, camera);
         },
