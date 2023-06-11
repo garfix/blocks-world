@@ -32,7 +32,7 @@ export default function () {
             const ambientLight = new THREE.AmbientLight(0xc0c0c0); // soft white light
             scene.add(ambientLight);
 
-            const spotlight = new THREE.SpotLight(0xffffff, 0.5);
+            const spotlight = new THREE.SpotLight(0xffffff, 0.4);
             spotlight.position.set(7, 5, 5);
             scene.add(spotlight);
 
