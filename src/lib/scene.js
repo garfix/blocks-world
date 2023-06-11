@@ -27,8 +27,14 @@ export default function () {
             scene = new THREE.Scene();
             scene.background = new THREE.Color(0xc2c0bf)
             camera = this.createCamera();
+            renderer = new THREE.WebGLRenderer({ antialias: true });
 
-            this.addTableLegs(scene)
+            const ambientLight = new THREE.AmbientLight(0xc0c0c0); // soft white light
+            scene.add(ambientLight);
+
+            const spotlight = new THREE.SpotLight(0xffffff, 0.5);
+            spotlight.position.set(7, 5, 5);
+            scene.add(spotlight);
 
             for (let i = 0; i < data.length; i++) {
                 let datum = data[i];
@@ -37,8 +43,9 @@ export default function () {
                 scene.add(object);
             }
 
-            renderer = new THREE.WebGLRenderer({ antialias: true });
+            this.addTableLegs(scene)
 
+            renderer.render(scene, camera);
             monitor.innerHTML = "";
             monitor.appendChild(renderer.domElement);
 
@@ -187,6 +194,8 @@ export default function () {
                 datum.Y = -tableThickness
                 datum.Height = tableThickness
                 return this.createBlock(datum)
+            } else if (datum.Type === "box") {
+                return this.createBox(datum)
             } else {
                 return this.createBlock(datum)
             }
@@ -199,11 +208,9 @@ export default function () {
                 Length: 10,
                 Color: datum.Color
             })
-            const shaftEdges = this.createEdges(shaft)
 
             let shaftGroup = new THREE.Group();
             shaftGroup.add(shaft);
-            shaftGroup.add(shaftEdges);
             shaftGroup.position.set(-5 / scale, 10 / scale, 5 / scale)
 
 
@@ -213,11 +220,9 @@ export default function () {
                 Length: 100,
                 Color: datum.Color
             })
-            const bottomEdges = this.createEdges(bottom)
 
             let bottomGroup = new THREE.Group();
             bottomGroup.add(bottom)
-            bottomGroup.add(bottomEdges)
             bottomGroup.position.set(-50 / scale, 0, 50 / scale)
 
 
@@ -235,7 +240,6 @@ export default function () {
         },
 
         createPyramid(datum) {
-            var geometry = new THREE.Geometry();
 
             let x = (datum.X / scale);
             let y = (datum.Y / scale);
@@ -244,32 +248,74 @@ export default function () {
             let l = -(datum.Length / scale);
             let h = (datum.Height / scale);
 
-            geometry.vertices = [
-                new THREE.Vector3(0, 0, 0),
-                new THREE.Vector3(w, 0, 0),
-                new THREE.Vector3(w, 0, l),
-                new THREE.Vector3(0, 0, l),
-                new THREE.Vector3(0.5 * w, h, 0.5 * l)
-            ];
+            const r = Math.sqrt(2 * w * w) / 2
+            const geometry = new THREE.ConeGeometry(r, h, 4);
 
-            geometry.faces = [
-                new THREE.Face3(0, 1, 2),
-                new THREE.Face3(0, 2, 3),
-                new THREE.Face3(1, 0, 4),
-                new THREE.Face3(2, 1, 4),
-                new THREE.Face3(3, 2, 4),
-                new THREE.Face3(0, 3, 4)
-            ];
+            let material = new THREE.MeshStandardMaterial({ color: colors[datum.Color], wireframe: false, transparent: true, opacity: opacity });
+            let mesh = new THREE.Mesh(geometry, material);
 
-            let material = new THREE.MeshBasicMaterial({ color: colors[datum.Color], wireframe: false, transparent: true, opacity: opacity });
-            let object = new THREE.Mesh(geometry, material);
+            mesh.rotation.y = Math.PI / 4;
+            mesh.position.set(w / 2, h / 2, l / 2)
 
             let group = new THREE.Group();
 
-            group.add(object);
+            group.add(mesh);
 
-            let edges = this.createEdges(object)
-            group.add(edges)
+            group.position.set(x, y, z);
+
+            return group;
+        },
+
+        createBox(datum) {
+
+            const thickness = 5;
+
+            let x = (datum.X / scale);
+            let y = (datum.Y / scale);
+            let z = -(datum.Z / scale);
+            let w = (datum.Width / scale);
+            let l = -(datum.Length / scale);
+            let h = (datum.Height / scale);
+
+            let group = new THREE.Group();
+
+            const front = this.createBlockMesh({
+                Width: datum.Width,
+                Length: thickness,
+                Height: datum.Height,
+                Color: datum.Color
+            })
+            const back = this.createBlockMesh({
+                Width: datum.Width,
+                Length: thickness,
+                Height: datum.Height,
+                Color: datum.Color
+            })
+            const bottom = this.createBlockMesh({
+                Width: datum.Width,
+                Length: datum.Length,
+                Height: thickness,
+                Color: datum.Color
+            })
+            const left = this.createBlockMesh({
+                Width: thickness,
+                Length: datum.Length,
+                Height: datum.Height,
+                Color: datum.Color
+            })
+            const right = this.createBlockMesh({
+                Width: thickness,
+                Length: datum.Length,
+                Height: datum.Height,
+                Color: datum.Color
+            })
+            back.position.z += l + thickness / scale
+            right.position.x += w - thickness / scale
+            group.add(front);
+            group.add(back);
+            group.add(bottom);
+            group.add(left);
+            group.add(right)
 
             group.position.set(x, y, z);
 
@@ -282,11 +328,9 @@ export default function () {
             let x = (datum.X / scale);
             let y = (datum.Y / scale);
             let z = -(datum.Z / scale);
-            let edges = this.createEdges(object)
 
             let group = new THREE.Group();
-            group.add(object);
-            group.add(edges)
+            group.add(object)
 
             group.position.set(x, y, z);
 
@@ -294,43 +338,10 @@ export default function () {
         },
 
         createBlockMesh(datum) {
-            let geometry = new THREE.Geometry();
 
             let w = (datum.Width / scale);
             let l = -(datum.Length / scale);
             let h = ((datum.Height ? datum.Height : 0.01) / scale);
-
-            geometry.vertices = [
-                new THREE.Vector3(0, 0, 0),
-                new THREE.Vector3(w, 0, 0),
-                new THREE.Vector3(w, 0, l),
-                new THREE.Vector3(0, 0, l),
-
-                new THREE.Vector3(0, h, 0),
-                new THREE.Vector3(w, h, 0),
-                new THREE.Vector3(w, h, l),
-                new THREE.Vector3(0, h, l),
-            ];
-
-            geometry.faces = [
-                new THREE.Face3(0, 1, 2),
-                new THREE.Face3(2, 3, 0),
-
-                new THREE.Face3(0, 1, 5),
-                new THREE.Face3(5, 4, 0),
-
-                new THREE.Face3(0, 3, 7),
-                new THREE.Face3(7, 4, 0),
-
-                new THREE.Face3(1, 2, 6),
-                new THREE.Face3(6, 5, 1),
-
-                new THREE.Face3(3, 2, 6),
-                new THREE.Face3(6, 7, 3),
-
-                new THREE.Face3(6, 5, 4),
-                new THREE.Face3(4, 7, 6),
-            ];
 
             let blockOpacity = opacity
 
@@ -339,8 +350,18 @@ export default function () {
             } else if (datum.Type === "table") {
                 blockOpacity = tableOpacity;
             }
-            let material = new THREE.MeshBasicMaterial({ color: colors[datum.Color], wireframe: false, transparent: true, opacity: blockOpacity });
-            let mesh = new THREE.Mesh(geometry, material);
+
+            let mesh = new THREE.Mesh(
+                new THREE.BoxGeometry(w, h, -l),
+                new THREE.MeshStandardMaterial({
+                    color: colors[datum.Color],
+                    transparent: true,
+                    opacity: blockOpacity
+                })
+            );
+
+            mesh.position.set(w / 2, h / 2, l / 2)
+
             return mesh;
         }
     }
