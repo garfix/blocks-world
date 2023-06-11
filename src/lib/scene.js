@@ -3,9 +3,9 @@ import { } from '../vendor/three'
 export default function () {
 
     const colors = {
-        red: 0xc00000,
-        green: 0x008000,
-        blue: 0x0000d0,
+        red: 0xa31f34,
+        green: 0x25a31f,
+        blue: 0x1f2aa3,
         white: 0xc0c0c0,
         brown: 0x654321,
         black: 0x000000
