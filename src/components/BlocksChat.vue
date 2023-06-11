@@ -83,18 +83,16 @@ function enterInput(message) {
 
 function print(message, isHtml) {
     const time = Math.min(TYPING_TIME * message.length, 7000)
-    if (message != "") {
-        showBlocksWorldTyping(true)
-        setTimeout(() => {
-            showBlocksWorldTyping(false)
-            addMessage({
-                from: "Blocks world",
-                text: [message],
-                sent: false,
-                isHtml: isHtml
-            })
-        }, time)
-    }
+    showBlocksWorldTyping(true)
+    setTimeout(() => {
+        showBlocksWorldTyping(false)
+        addMessage({
+            from: "Blocks world",
+            text: [message],
+            sent: false,
+            isHtml: isHtml
+        })
+    }, time)
     return time
 }
 
