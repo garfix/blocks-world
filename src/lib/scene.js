@@ -48,7 +48,7 @@ export default function () {
         resize() {
             const width = window.innerWidth
             const height = window.innerHeight
-            const size = (width > height) ? Math.min(width / 2, height - 50) : Math.min(width, (height - 50) / 2)
+            const size = (width > height) ? Math.min(Math.min(width, 1500) / 2, height - 50) : Math.min(Math.min(width, 1500), (height - 50) / 2)
             renderer.setSize(size, size);
             renderer.render(scene, camera);
         },
