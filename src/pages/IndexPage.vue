@@ -23,8 +23,12 @@
                 </div>
             </q-linear-progress>
 
-            <q-btn v-if="isInteractive() && voicePossible()" push color="primary" round size="lg"
-                :icon="recording ? 'graphic_eq' : 'keyboard_voice'" class="voice-input" @click="record()" />
+            <q-btn v-if="voicePossible() && isInteractive() && !recording" push color="primary" round size="lg"
+                icon="keyboard_voice" class="voice-input" @click="record()" />
+            <q-btn v-if="recording" push color="primary" round size="lg" class="voice-input">
+                <animated-sound-wave></animated-sound-wave>
+
+            </q-btn>
         </div>
 
     </q-page>
@@ -38,6 +42,7 @@ import BlocksMonitor from '../components/BlocksMonitor.vue'
 import controller from '../lib/controller'
 import conversation from '../lib/conversation'
 import speech from '../lib/speech'
+import AnimatedSoundWave from '../components/AnimatedSoundWave.vue'
 
 const BETWEEN_INTERACTIONS = 2000
 const BETWEEN_KEY_STROKES = 100
