@@ -22,8 +22,10 @@
                     <q-badge color="white" text-color="primary" :label="progressLabel" />
                 </div>
             </q-linear-progress>
-        </div>
 
+            <q-btn v-if="isInteractive() && voicePossible()" push color="primary" round size="lg"
+                :icon="recording ? 'graphic_eq' : 'keyboard_voice'" class="voice-input" @click="record()" />
+        </div>
 
     </q-page>
 </template>
@@ -35,6 +37,7 @@ import BlocksChat from '../components/BlocksChat.vue'
 import BlocksMonitor from '../components/BlocksMonitor.vue'
 import controller from '../lib/controller'
 import conversation from '../lib/conversation'
+import speech from '../lib/speech'
 
 const BETWEEN_INTERACTIONS = 2000
 const BETWEEN_KEY_STROKES = 100
@@ -44,14 +47,20 @@ const STATE_RUNNING = "running"
 const STATE_PAUSING = "pausing"
 const STATE_PAUSED = "paused"
 
+const CONFIDENCE_HIGH = 0.92
+
 const chat = ref()
 const demoState = ref(STATE_INACTIVE)
 const progress = computed(() => interactionIndex.value / conversation.length)
 const progressLabel = computed(() => interactionIndex.value + " / " + conversation.length)
 let interactionIndex = ref(0);
+const recording = ref(false)
 
 onMounted(() => {
     startController()
+    if (speech.isSupported()) {
+        speech.init(handleSpeechInput)
+    }
 })
 
 function startController() {
@@ -66,6 +75,10 @@ function startDemo() {
 
 function isAutomatic() {
     return demoState.value == STATE_RUNNING || demoState.value == STATE_PAUSING
+}
+
+function isInteractive() {
+    return !isAutomatic()
 }
 
 function print(message, isHtml) {
@@ -120,6 +133,26 @@ function nextInteraction() {
 function resetDemo() {
     interactionIndex.value = 0
     demoState.value = STATE_INACTIVE
+}
+
+function voicePossible() {
+    return speech.isSupported()
+}
+
+function record() {
+    recording.value = true
+    speech.start()
+}
+
+function handleSpeechInput(input, confidence) {
+    recording.value = false
+    if (confidence === 0) {
+        return
+    } else if (confidence > CONFIDENCE_HIGH) {
+        chat.value.enterInput(input)
+    } else {
+        chat.value.enterInputAndFocus(input)
+    }
 }
 
 </script>
@@ -196,5 +229,11 @@ function resetDemo() {
 
 .sidebar-item {
     width: calc(100% - 20px);
+}
+
+.voice-input {
+    width: 60px;
+    margin-left: auto;
+    margin-right: auto;
 }
 </style>

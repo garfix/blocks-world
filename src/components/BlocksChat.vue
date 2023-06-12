@@ -43,6 +43,7 @@ defineExpose({
     print,
     typePartOfMessage,
     enterInput,
+    enterInputAndFocus,
     clear
 })
 
@@ -79,6 +80,11 @@ function typePartOfMessage(message) {
 function enterInput(message) {
     text.value = message
     send()
+}
+
+function enterInputAndFocus(message) {
+    text.value = message
+    input.value.focus()
 }
 
 function print(message, isHtml) {
