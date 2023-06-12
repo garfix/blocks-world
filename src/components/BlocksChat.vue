@@ -16,7 +16,7 @@
     <div class="chat-input">
 
         <q-input bottom-slots v-model="text" label="Message" class="input" @keyup.enter="send" @keyup.up="previous"
-            @keyup.down="next" ref="input">
+            @keyup.down="next" ref="input" :disable="isAutomatic">
             <template v-slot:append>
                 <q-icon v-if="text !== ''" name="close" class="cursor-pointer" @click="clearInput" />
             </template>
@@ -48,7 +48,7 @@ defineExpose({
 })
 
 const emits = defineEmits(['input'])
-const props = defineProps(['inMessage'])
+const props = defineProps(['inMessage', 'isAutomatic'])
 const container = ref()
 const history = ref([""])
 const historyIndex = ref(0)

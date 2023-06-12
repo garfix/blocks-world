@@ -5,7 +5,7 @@
             <blocks-monitor id="monitor"></blocks-monitor>
         </div>
         <div class="col col-md-auto column chat">
-            <blocks-chat ref="chat" @input="handleInput"></blocks-chat>
+            <blocks-chat ref="chat" @input="handleInput" :isAutomatic="isAutomatic()"></blocks-chat>
         </div>
         <div class="col col-md-auto column sidebar q-gutter-md">
             <q-btn v-if="demoState == STATE_INACTIVE" color="primary" label="Start demo" class="sidebar-item"
