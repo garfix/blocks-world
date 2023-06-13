@@ -27,8 +27,9 @@
                 icon="keyboard_voice" class="voice-input" @click="record()" />
             <q-btn v-if="recording" push color="primary" round size="lg" class="voice-input">
                 <animated-sound-wave></animated-sound-wave>
-
             </q-btn>
+
+            <q-select v-model="hint" :options="hints" label="Hints" @update:model-value="useHint" />
         </div>
 
     </q-page>
@@ -58,8 +59,29 @@ const chat = ref()
 const demoState = ref(STATE_INACTIVE)
 const progress = computed(() => interactionIndex.value / conversation.length)
 const progressLabel = computed(() => interactionIndex.value + " / " + conversation.length)
-let interactionIndex = ref(0);
+const interactionIndex = ref(0);
 const recording = ref(false)
+const hints = ref([
+    { value: "Pick up ", label: "Pick up <X>" },
+    { value: "Stack up ", label: "Stack up <X>" },
+    { value: "Put ", label: "Put <X> on <Y>" },
+    { value: "What does the box contain?", label: "What does the box contain?" },
+    { value: "What is ", label: "What is <X> supported by?" },
+    { value: "How many ", label: "How many <X> are <Y>?" },
+    { value: "Which  ", label: "Which <X> is sitting on <Y>?" },
+    { value: "When did you ", label: "When did you <X>?" },
+    { value: "Why did you ", label: "Why did you <X>?" },
+    { value: "Is there ", label: "Is there <X>?" },
+    { value: "I own ", label: "I own <X>" },
+    { value: "Do I own ", label: "Do I own <X>?" },
+    { value: "A ", label: "A <Name> is a <Description>" },
+    { value: "Call ", label: "Call <X> \"<Name>\"" },
+    { value: "Thank you", label: "Thank you" },
+
+
+
+])
+const hint = ref("")
 
 onMounted(() => {
     startController()
@@ -158,6 +180,10 @@ function handleSpeechInput(input, confidence) {
     } else {
         chat.value.enterInputAndFocus(input)
     }
+}
+
+function useHint(selected) {
+    chat.value.enterInputAndFocus(selected.value)
 }
 
 </script>
