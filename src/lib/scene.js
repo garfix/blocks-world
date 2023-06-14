@@ -51,8 +51,6 @@ export default function () {
             monitor.appendChild(renderer.domElement);
 
             this.resize();
-
-            // this.runAnimations([this.createCameraAnimation(1000)], 1000)
         },
 
         resize() {
@@ -181,34 +179,6 @@ export default function () {
             camera.position.set(23, 15, 35.5);
 
             return camera;
-        },
-
-        createCameraAnimation(duration) {
-            // let goal = { X: 30, Y: 15, Z: 35.5 }
-            let object = objects['camera']
-            // let startX = object.position.x * scale;
-            // let startY = object.position.y;
-            // let startZ = -object.position.z * scale;
-
-            let animation = function (time) {
-                if (time > duration) { time = duration; }
-                let fract = time / duration;
-                return {
-                    E: 'camera',
-                    X: 23,//Math.sin(fract * 2 * 3.14) * 2000,
-                    Z: 15,//Math.cos(fract * 2 * 3.14) * 2000,
-                    Y: 35.5
-                }
-            }
-
-            // mesh.position.x = Math.sin(time) * 2;
-            // mesh.position.z = Math.cos(time) * 2;
-
-            // camera.position.x = Math.sin(time) * 2;
-            // camera.position.z = Math.cos(time) * 2;
-
-
-            return animation
         },
 
         // https://stackoverflow.com/questions/36472653/drawing-edges-of-a-mesh-in-three-js

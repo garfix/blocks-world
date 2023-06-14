@@ -70,6 +70,10 @@ export default (function () {
             case "choose":
                 choose(message.Message[0], message.Message[1])
                 break
+            case "error":
+                const msg = "<div class='error'>ERROR</div>" + message.Message[0]
+                printer(msg, true)
+                break
         }
     }
 

@@ -267,4 +267,9 @@ function useHint(selected) {
     margin-left: auto;
     margin-right: auto;
 }
+
+.error {
+    font-weight: bold;
+    color: red;
+}
 </style>
