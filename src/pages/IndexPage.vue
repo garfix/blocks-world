@@ -7,7 +7,7 @@
         <div class="col col-md-auto column chat">
             <blocks-chat ref="chat" @input="handleInput" :isAutomatic="isAutomatic()"></blocks-chat>
         </div>
-        <div class="col col-md-auto column sidebar q-gutter-md">
+        <div class="col col-md-auto column sidebar">
             <q-btn v-if="demoState == STATE_INACTIVE" color="primary" label="Start demo" class="sidebar-item"
                 @click="startDemo" />
             <q-btn v-if="demoState == STATE_RUNNING" color="primary" label="Pause" class="sidebar-item"
@@ -259,7 +259,8 @@ function useHint(selected) {
 }
 
 .sidebar-item {
-    width: calc(100% - 36px);
+    width: calc(100%);
+    margin-bottom: 20px;
 }
 
 .voice-input {
