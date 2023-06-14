@@ -25,11 +25,11 @@
 
             <q-btn v-if="voicePossible() && isInteractive() && !recording" push color="primary" round size="lg"
                 icon="keyboard_voice" class="voice-input" @click="record()" />
-            <q-btn v-if="recording" push color="primary" round size="lg" class="voice-input">
+            <q-btn v-if="recording" push color="primary" round size="lg" class="voice-input sidebar-item">
                 <animated-sound-wave></animated-sound-wave>
             </q-btn>
 
-            <q-select v-model="hint" :options="hints" label="Hints" @update:model-value="useHint" />
+            <q-select v-model="hint" :options="hints" label="Hints" @update:model-value="useHint" class="sidebar-item" />
         </div>
 
     </q-page>
@@ -259,7 +259,7 @@ function useHint(selected) {
 }
 
 .sidebar-item {
-    width: calc(100% - 20px);
+    width: calc(100% - 36px);
 }
 
 .voice-input {
