@@ -1,6 +1,10 @@
 import createScene from './scene'
 
 export default (function () {
+
+    const CLOSING = 2;
+    const CLOSED = 3;
+
     let monitor
     let webSocket
     let scene
@@ -122,6 +126,10 @@ export default (function () {
 
     function send(resource, messageType, message) {
         console.log("send", messageType, message)
+        if ([CLOSING, CLOSED].includes(webSocket.readyState)) {
+            printer("Sorry, the connection to the server is closed. Reload the page for a new connection")
+            return
+        }
         webSocket.send(JSON.stringify({
             System: "blocks",
             Resource: resource,
