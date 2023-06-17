@@ -37,7 +37,7 @@
 
 <script setup>
 
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, nextTick } from 'vue';
 import BlocksChat from '../components/BlocksChat.vue'
 import BlocksMonitor from '../components/BlocksMonitor.vue'
 import controller from '../lib/controller'
@@ -77,17 +77,17 @@ const hints = ref([
     { value: "A ", label: "A <Name> is a <Description>" },
     { value: "Call ", label: "Call <X> \"<Name>\"" },
     { value: "Thank you", label: "Thank you" },
-
-
-
 ])
 const hint = ref("")
+const voiceInteraction = ref(false)
 
 onMounted(() => {
     startController()
     if (speech.isSupported()) {
         speech.init(handleSpeechInput)
     }
+
+    print("Blocks world is ready. What shall I do?", false)
 })
 
 function startController() {
@@ -109,6 +109,21 @@ function isInteractive() {
 }
 
 function print(message, isHtml) {
+
+    if (voiceInteraction.value) {
+
+        if (window.speechSynthesis) {
+            setTimeout(() => {
+                const utterance = new SpeechSynthesisUtterance(message);
+                utterance.text = message
+                utterance.lang = 'en-US'
+                window.speechSynthesis.speak(utterance)
+            }, 0)
+        }
+    }
+
+    voiceInteraction.value = false
+
     return chat.value.print(message, isHtml)
 }
 
@@ -168,6 +183,7 @@ function voicePossible() {
 
 function record() {
     recording.value = true
+    voiceInteraction.value = true
     speech.start()
 }
 
