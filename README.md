@@ -10,6 +10,8 @@ The web-interface was built with [Quasar](https://quasar.dev/) and [Three.js](ht
 
 Interact with the blocks world online at https://patrickvanbergen.com/blocks-world/
 
+You'll find that it doesn't work perfectly. It still makes many silly mistakes. Consider it as part of the charm of the application, as this form of AI is quite brittle, and making it robust is still a big challenge. Research in the area of rule based AI has almost stopped completely about 20 years ago. I think this is unfortunate because it still has potential, and it's a great way to learn about semantics.
+
 ## Preview
 
 https://github.com/garfix/blocks-world/assets/5256409/7a4cdf08-583c-4d3a-8c3c-d477589d1982
