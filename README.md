@@ -4,6 +4,10 @@ An [NLI-GO](https://github.com/garfix/nli-go) client for the blocks world, a rep
 
 Built with [Quasar](https://quasar.dev/) and [Three.js](https://threejs.org/)
 
+## Online demo
+
+Interact with the blocks world online at https://patrickvanbergen.com/blocks-world/
+
 ## Preview
 
 https://github.com/garfix/blocks-world/assets/5256409/7a4cdf08-583c-4d3a-8c3c-d477589d1982
@@ -12,12 +16,14 @@ https://github.com/garfix/blocks-world/assets/5256409/7a4cdf08-583c-4d3a-8c3c-d4
 
 * An animated 3D blocks world
 * Enter a sentence by keyboard
-* Enter a sentence by voice and receive an answer by speech
+* Enter a sentence by voice and receive an answer by speech (Chrome only)
 * Click on any of your previous input sentences to edit it
 * Use up/down keys to go though your history
 * "Start demo" button that plays the 44-interaction dialog
 * Pause / continue the dialog
 * A list of hints to help you think of a sentence
+* Also works on a mobile phone
+* Installable as application
 
 ## Installation
 
@@ -35,11 +41,7 @@ Build the app for production
 
     yarn quasar build
 
-## Deployment
-
 ## Path
-
-The server is currently deployed on https://patrickvanbergen.com/blocks
 
 In `quasar.config.js` `publicPath` is set to `/blocks` as this is where the site is currently deployed. You may need to change it. There are also references in `public/manifest.json`.
 
@@ -59,9 +61,3 @@ It proxies the request /ws_chat to port 3333
 
 from: https://httpd.apache.org/docs/2.4/mod/mod_proxy_wstunnel.html
 
-## Icon
-
-at(`block:small-red`, 100, 100, 0)
-at(`pyramid:green`, 100, 100, 100)
-at(`block:blue`, 150, 250, 0)
-size(`block:blue`, 100, 100, 200)
