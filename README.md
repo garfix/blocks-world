@@ -4,7 +4,7 @@ An [NLI-GO](https://github.com/garfix/nli-go) client for the blocks world, a rep
 
 Built with [Quasar](https://quasar.dev/) and [Three.js](https://threejs.org/)
 
-<video src="static/blocks.mp4" controls width="600"></video>
+https://github.com/garfix/blocks-world/assets/5256409/7a4cdf08-583c-4d3a-8c3c-d477589d1982
 
 ## Installation
 
