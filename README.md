@@ -4,7 +4,20 @@ An [NLI-GO](https://github.com/garfix/nli-go) client for the blocks world, a rep
 
 Built with [Quasar](https://quasar.dev/) and [Three.js](https://threejs.org/)
 
+## Preview
+
 https://github.com/garfix/blocks-world/assets/5256409/7a4cdf08-583c-4d3a-8c3c-d477589d1982
+
+## Features
+
+* An animated 3D blocks world
+* Enter a sentence by keyboard
+* Enter a sentence by voice and receive an answer by speech
+* Click on any of your previous input sentences to edit it
+* Use up/down keys to go though your history
+* "Start demo" button that plays the 44-interaction dialog
+* Pause / continue the dialog
+* A list of hints to help you think of a sentence
 
 ## Installation
 
