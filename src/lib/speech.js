@@ -15,13 +15,13 @@ export default (function () {
         recognition.continuous = false;
         recognition.lang = "en-US";
         recognition.interimResults = false;
-        recognition.maxAlternatives = 1;
+        recognition.maxAlternatives = 10;
 
         recognition.onresult = (event) => {
-            const color = event.results[0][0].transcript;
+            console.log(event.results)
+            const text = event.results[0][0].transcript;
             const confidence = event.results[0][0].confidence
-            textResultCallback(color, confidence)
-            console.log('Confidence', confidence);
+            textResultCallback(text, confidence)
         };
 
         recognition.onnomatch = () => {
