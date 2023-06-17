@@ -2,7 +2,9 @@
 
 An [NLI-GO](https://github.com/garfix/nli-go) client for the blocks world, a replication of Terry Winograd's SHRDLU (1970).
 
-Built with [Quasar](https://quasar.dev/) and [Three.js](https://threejs.org/)
+This is _not_ a implementation of the original LISP code. It's rebuilt from the ground up in the Go programming language.
+
+The web-interface was built with [Quasar](https://quasar.dev/) and [Three.js](https://threejs.org/)
 
 ## Online demo
 
