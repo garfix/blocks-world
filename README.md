@@ -1,6 +1,6 @@
 # Blocks world
 
-An [NLI-GO](https://github.com/garfix/nli-go) application of the blocks world, a replication of Terry Winograd's SHRDLU (1970).
+An [NLI-GO](https://github.com/garfix/nli-go) application of the blocks world, a replication of [Terry Winograd's SHRDLU](https://en.wikipedia.org/wiki/SHRDLU) (1970).
 
 This is not an implementation of the original LISP code. It's rebuilt from the ground up in the Go programming language.
 
