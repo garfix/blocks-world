@@ -71,7 +71,7 @@ export default (function () {
                 choose(message.Message[0], message.Message[1])
                 break
             case "error":
-                const msg = "<div class='error'>ERROR</div>" + message.Message[0]
+                const msg = "<div class='error'>ERROR</div>" + message.Message
                 printer(msg, true)
                 break
         }
